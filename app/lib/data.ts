@@ -13,23 +13,24 @@ export async function fetchRevenue() {
   try {
     // Artificially delay a response for demo purposes.
     // Don't do this in production :)
-
-    // console.log('Fetching revenue data...');
-    // await new Promise((resolve) => setTimeout(resolve, 3000));
+    console.log('Fetching revenue data...');
+    await new Promise((resolve) => setTimeout(resolve, 5000));
 
     const data = await sql<Revenue>`SELECT * FROM revenue`;
 
-    // console.log('Data fetch completed after 3 seconds.');
+    console.log('Data fetch completed afted 3 seconds');
 
     return data.rows;
-  } catch (error) {
-    console.error('Database Error:', error);
+  } catch (error: any) {
+    console.error('Database Error:', error.message);
+    console.error('Error stack', error.stack);
     throw new Error('Failed to fetch revenue data.');
   }
 }
 
 export async function fetchLatestInvoices() {
   try {
+    console.log('Fetching latest invoices...');
     const data = await sql<LatestInvoiceRaw>`
       SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
       FROM invoices
@@ -42,8 +43,9 @@ export async function fetchLatestInvoices() {
       amount: formatCurrency(invoice.amount),
     }));
     return latestInvoices;
-  } catch (error) {
-    console.error('Database Error:', error);
+  } catch (error: any) {
+    console.error('Database Error:', error.message);
+    console.error('Error stack', error.stack);
     throw new Error('Failed to fetch the latest invoices.');
   }
 }
@@ -77,8 +79,9 @@ export async function fetchCardData() {
       totalPaidInvoices,
       totalPendingInvoices,
     };
-  } catch (error) {
-    console.error('Database Error:', error);
+  } catch (error: any) {
+    console.error('Database Error:', error.message);
+    console.error('Error stack', error.stack);
     throw new Error('Failed to fetch card data.');
   }
 }
